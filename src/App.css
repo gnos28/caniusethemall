@@ -11,3 +11,23 @@
 .btn {
   align-self: flex-end;
 }
+
+.usageBar{
+  position:relative;
+  height: 1.5em;
+  width: 100%;
+}
+
+.bar{
+  position: absolute;
+  top:0;
+  left:0;
+  height: 1.5em;
+}
+
+.usageBar > span{
+  position: relative;
+  display: block;
+  width: 100%;
+  z-index: 10;
+}

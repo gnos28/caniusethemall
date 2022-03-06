@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import FormCss from "./FormCss";
 import Result from "./Result";
 
 class App extends React.Component {
@@ -10,19 +11,17 @@ class App extends React.Component {
       dataToSubmit: "",
     };
   }
+  
+  handleChange = (e) => {
+    this.setState({
+      textarea: e.target.value,
+    });
+  };
 
   handleClick = (e) => {
     e.preventDefault();
     this.setState({
-      dataToSubmit: this.state.textarea
-    }, () => console.log(this.state));
-    
-  };
-
-  handleChange = (e) => {
-    console.log(e.target.value);
-    this.setState({
-      textarea: e.target.value,
+      dataToSubmit: this.state.textarea,
     });
   };
 
@@ -30,28 +29,7 @@ class App extends React.Component {
     return (
       <div className="container">
         <h1>CSS file analyzer using caniuse API</h1>
-        <form>
-          <div className="form-group">
-            <label htmlFor="exampleFormControlTextarea1">
-              Paste your css file here
-            </label>
-            <textarea
-              className="form-control"
-              id="exampleFormControlTextarea1"
-              rows="3"
-              placeholder="Paste your css file here"
-              value={this.state.textarea}
-              onChange={(e) => this.handleChange(e)}
-            ></textarea>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={(e) => this.handleClick(e)}
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+        <FormCss handleClick={this.handleClick}  handleChange={this.handleChange} textarea={this.state.textarea}/>
         <Result data={this.state.dataToSubmit} />
       </div>
     );

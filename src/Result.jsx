@@ -1,45 +1,106 @@
 import React from "react";
-import { browserDistribution } from "./browserDistribution";
-const caniuse = require('caniuse-api')
+// import { browserDistribution } from "./data/browserDistribution";
+// import caniuseData from "./data/data.json";
+import caniuseData1 from "./data/data-1.0.json";
+// import caniuseData2 from "./data/data-2.0.json";
+// const caniuse = require("caniuse-api");
+import UsageBar from "./UsageBar";
 
+function cssFindWords(rawCSS) {
+  let words = [];
+  let word = "";
 
-class Result extends React.Component {
-  constructor(props)
-  {
-    super(props)
-    this.data = props.data
-    this.state = {
-      result : ""
+  rawCSS = rawCSS.replaceAll("\n", "");
+
+  let spreadRawCss = [...rawCSS];
+
+  spreadRawCss.forEach((car) => {
+    if (
+      car !== "{" &&
+      car !== "}" &&
+      car !== ";" &&
+      car !== "," &&
+      car !== "(" &&
+      car !== ")" &&
+      car !== ":" &&
+      car !== " "
+    )
+      word += car;
+    else {
+      if (word.length > 0) {
+        if (
+          !word.includes("1") &&
+          !word.includes("2") &&
+          !word.includes("3") &&
+          !word.includes("4") &&
+          !word.includes("5") &&
+          !word.includes("6") &&
+          !word.includes("7") &&
+          !word.includes("8") &&
+          !word.includes("9") &&
+          !word.includes("0") &&
+          !word.includes(".") &&
+          !word.includes("#")
+        )
+          words.push(word);
+      }
+      word = "";
     }
+  });
+  if (word.length > 0) words.push(word);
+
+  let uniqueWords = [...new Set(words)];
+
+  return uniqueWords;
+}
+
+class Result extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.data = props.data;
   }
-  
+
   getResult = () => {
-    const result = caniuse.getSupport('flexbox')
-    this.setState({
-      result : JSON.stringify(result)
-    })
+    this.data = this.props.data;
+
+    let words = cssFindWords(this.data);
+
+    let canIuseResults = [];
+
+    Object.entries(caniuseData1.data).forEach((cssObject) => {
+      if (words.includes(cssObject[0])) {
+        canIuseResults.push({
+          word: cssObject[0] + " / " + cssObject[1].title,
+          usage: cssObject[1].usage_perc_y+cssObject[1].usage_perc_a,
+          object: cssObject[1],
+        });
+      } else
+        cssObject[1].keywords.split(",").forEach((keyword) => {
+          if (words.includes(keyword))
+            canIuseResults.push({
+              word: keyword + " / " + cssObject[1].title,
+              usage: cssObject[1].usage_perc_y+cssObject[1].usage_perc_a,
+              object: cssObject[1],
+            });
+        });
+    });
+
+    canIuseResults.sort((a, b) => {
+      return a.usage - b.usage;
+    });
+
+    console.log("canIuseResults", canIuseResults);
+
+    return canIuseResults;
   }
 
-  componentDidMount()
-  {
-    this.getResult()
-  }
-  
-  componentWillUpdate()
-  {
-    const toto = () => this.getResult()
-    console.log('boloss')
-  }
+  render() {
+    console.log("**** render Result");
+    console.log("caniuseData1", caniuseData1);
 
-  render()
-  {
-    
-    
-    return (
-      <div className="form-control">
-        {this.state.result}
-      </div>
-    );
+    const update = () => this.getResult();
+
+    return <div className="form-control">{this.getResult().map((item, index) => <UsageBar key={'usageBar_'+index} name={item.word} usage={item.usage}/>)}</div>;
   }
 }
 
