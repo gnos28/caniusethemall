@@ -21,7 +21,7 @@ class UsageBar extends React.Component {
           }}
         >
         </div>
-        <span>{this.name} {this.usage}</span>
+        <span>{Math.floor(this.usage*10)/10}% - {this.name}</span>
       </div>
     );
   }

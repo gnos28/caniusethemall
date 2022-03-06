@@ -28,7 +28,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>CSS file analyzer using caniuse API</h1>
+        <h1>CSS file analyzer using caniuse datas</h1>
         <FormCss handleClick={this.handleClick}  handleChange={this.handleChange} textarea={this.state.textarea}/>
         <Result data={this.state.dataToSubmit} />
       </div>

@@ -7,12 +7,7 @@ class FormCss extends React.Component {
     this.handleClick = props.handleClick
     this.handleChange = props.handleChange
   }
-
-//   componentWillUpdate()
-//   {
-//     this.textarea = this.props.textarea
-//   }
-
+  
   render() {
     this.textarea = this.props.textarea
 

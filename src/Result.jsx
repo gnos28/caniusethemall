@@ -1,9 +1,5 @@
 import React from "react";
-// import { browserDistribution } from "./data/browserDistribution";
-// import caniuseData from "./data/data.json";
 import caniuseData1 from "./data/data-1.0.json";
-// import caniuseData2 from "./data/data-2.0.json";
-// const caniuse = require("caniuse-api");
 import UsageBar from "./UsageBar";
 
 function cssFindWords(rawCSS) {
@@ -88,15 +84,11 @@ class Result extends React.PureComponent {
     canIuseResults.sort((a, b) => {
       return a.usage - b.usage;
     });
-
-    console.log("canIuseResults", canIuseResults);
-
+    
     return canIuseResults;
   }
 
   render() {
-    console.log("**** render Result");
-    console.log("caniuseData1", caniuseData1);
 
     const update = () => this.getResult();
 
